@@ -1,28 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import TestChart from "./TestChart";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+const Index = () => <div><h2>Home</h2><TestChart /></div>
+const About = () => <h2>About</h2>;
+const Users = () => <h2>Users</h2>;
+
+const App = () => (
+  <Router>
+    <div>
+      <nav>
+        <div className="nav-wrapper">
+          <a href="#!" class="brand-logo center">Tiger Dash</a>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about/">About</Link>
+            </li>
+            <li>
+              <Link to="/users/">Users</Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div className="container">
+        <Route path="/" exact component={Index} />
+        <Route path="/about/" component={About} />
+        <Route path="/users/" component={Users} />
       </div>
-    );
-  }
-}
+    </div>
+  </Router>
+);
 
 export default App;
