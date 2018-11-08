@@ -22,8 +22,16 @@ class TestChart extends Component {
 	}
 
 	render() {
+
 		return(
 			<div>
+				<form>
+					{
+						this.state.labels.map(x => {
+							return <label><input type="checkbox" /><span>{ x }</span></label>
+						})
+					}
+				</form>
 				<LineChart data={this.state} options={null} width="600" height="250"/>
 				<BarChart data={this.state} options={null} width="600" height="250"/>
 			</div>

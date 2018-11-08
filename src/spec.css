@@ -1,0 +1,9 @@
+/*CSS for specific components*/
+
+body {
+	background-color: blue;
+}
+
+nav ul li {
+	float: none;
+}
