@@ -29,10 +29,56 @@ class QPanel extends Component {
 					},
 					graphType: "line",
 					date: "2018-11-03"
+				},
+				{
+					graphData: {
+						labels: ["January", "February", "March", "April", "May", "June", "July"],
+					    datasets: [
+					        {
+					            label: "2018",
+					            fillColor: "rgba(220,220,220,0.2)",
+								strokeColor: "rgba(220,220,220,1)",
+								pointColor: "rgba(220,220,220,1)",
+								pointStrokeColor: "#fff",
+								pointHighlightFill: "#fff",
+								pointHighlightStroke: "rgba(220,220,220,1)",
+					            pointHoverRadius: 5,
+					            pointRadius: 1,
+					            pointHitRadius: 10,
+					            data: [65, 59, 80, 81, 56, 55, 40],
+					            spanGaps: false,
+					        }
+					    ]
+					},
+					graphType: "radar",
+					date: "2018-11-02"
+				},
+				{
+					graphData: {
+						labels: ["January", "February", "March", "April", "May", "June", "July"],
+					    datasets: [
+					        {
+					            label: "2019",
+					            fillColor: "rgba(220,220,220,0.2)",
+								strokeColor: "rgba(220,220,220,1)",
+								pointColor: "rgba(220,220,220,1)",
+								pointStrokeColor: "#fff",
+								pointHighlightFill: "#fff",
+								pointHighlightStroke: "rgba(220,220,220,1)",
+					            pointHoverRadius: 5,
+					            pointRadius: 1,
+					            pointHitRadius: 10,
+					            data: [65, 59, 80, 81, 56, 55, 40],
+					            spanGaps: false,
+					        }
+					    ]
+					},
+					graphType: "bar",
+					date: "2018-11-05"
 				}
 			], 
 			currentGraph: {
-				"graphType": "",
+				"graphType": "",	
 				"date": ""
 			}
 		}
@@ -61,7 +107,11 @@ class QPanel extends Component {
 				<div className="col s6 m6 l6">
 					{
 						this.state.queries.map(x => {
-							return <button className="btn-large" graphtype={ x.graphType } date={ x.date } onClick={ this.updateGraph.bind(this, x) } > { x.graphType + " graph saved on " + x.date } </button>
+							return <ul>
+								<li>
+									<button className="btn-large" graphtype={ x.graphType } date={ x.date } onClick={ this.updateGraph.bind(this, x) } > { x.graphType + " graph saved on " + x.date } </button>
+								</li>
+							</ul>
 						})
 					}
 				</div>
