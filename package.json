@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "chart.js": "^1.1.1",
+    "fine-uploader": "^5.16.2",
     "gh-pages": "^2.0.1",
     "mathjs": "^5.2.3",
     "react": "^16.6.0",
     "react-chartjs": "^1.2.0",
     "react-dom": "^16.6.0",
+    "react-fine-uploader": "^1.1.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.0"

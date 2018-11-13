@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Graph from "./TestChart";
+import UploadComponent from "./DataUpload";
 
 const Index = () => <div className="row"><Graph key="1"/><Graph key="2"/></div>
 const Map = () => <h2>Map</h2>;
 const Saved = () => <h2>Saved</h2>;
-const Upload = () => <h2>Upload</h2>;
+const Upload = () => <div><h2>Upload</h2><UploadComponent /></div>;
 
 const App = () => (
   <div>
