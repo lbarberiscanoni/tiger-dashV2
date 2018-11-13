@@ -83,7 +83,7 @@ class ResourceMap extends Component {
 			<div className="container">	
 				<div className="row">
 					<div className="col s12 m12 l12 center-align">
-						<a className="dropdown-trigger btn" data-target="dropdown">Majors</a>
+						<a className="dropdown-trigger btn-large" data-target="dropdown">Majors</a>
 						<ul id="dropdown" className="dropdown-content">
 							{
 								majorList.map(x => {
