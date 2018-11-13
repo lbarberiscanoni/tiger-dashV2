@@ -18,11 +18,24 @@ const uploader = new FineUploaderTraditional({
 
 class UploadComponent extends Component {
 
+	constructor(props) {
+		super(props)
+	}
+
 	render() {
 		return(
-			<FileInput multiple accept='csv/*' uploader={ uploader }>
-				<span className="btn">Choose Files</span>
-			</FileInput>
+			<div className="container">
+				<div className="col s4 m4 l4"></div>
+				<div className="col s4 m4 l4">
+					<FileInput multiple accept='csv/*' uploader={ uploader }>
+						<span className="btn-large">
+							<i class="material-icons left">cloud</i>
+							Choose Files
+						</span>
+					</FileInput>
+				</div>
+				<div className="col s4 m4 l4"></div>
+			</div>
 		)
 	}
 } 
