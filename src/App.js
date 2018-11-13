@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import TestChart from "./TestChart";
+import Graph from "./TestChart";
 
-const Index = () => <div><TestChart /></div>
+const Index = () => <div className="row"><Graph key="1"/><Graph key="2"/></div>
 const Map = () => <h2>Map</h2>;
 const Saved = () => <h2>Saved</h2>;
 const Upload = () => <h2>Upload</h2>;

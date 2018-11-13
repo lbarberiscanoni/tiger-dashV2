@@ -5,6 +5,7 @@
   "dependencies": {
     "chart.js": "^1.1.1",
     "gh-pages": "^2.0.1",
+    "mathjs": "^5.2.3",
     "react": "^16.6.0",
     "react-chartjs": "^1.2.0",
     "react-dom": "^16.6.0",
