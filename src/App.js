@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Graph from "./Graph";
 import UploadComponent from "./DataUpload";
 import ResourceMap from "./ResourceMap";
+import QPanel from "./Queries";
 
 const Index = () => <div className="row"><Graph key="1"/><Graph key="2"/></div>
 const Map = () => <div className="row"><h2 className="center-align">Resource Availability</h2><ResourceMap /></div>
-const Saved = () => <div className="row"><h2 className="center-align">All of Your Queries in One Place</h2></div>
+const Saved = () => <div className="row"><h2 className="center-align">All of Your Queries in One Place</h2><QPanel /></div>
 const Upload = () => <div className="row"><h2 className="center-align">Upload New Data to the App</h2><UploadComponent /></div>
 
 

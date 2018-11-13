@@ -168,7 +168,7 @@ class ChartContainer extends Component {
 				<div className="row">
 					<div className="col s4 m4 l4"></div>
 					<div className="col s4 m4 l4">
-						<button className="btn waves-effect waves-light" onClick={ this.props.screenshot(this.state.chartType) } > 
+						<button className="btn waves-effect waves-light" onClick={ () => { alert("saved!") } } > 
 							SAVE
 							<i className="material-icons right">save</i>
 						</button>
@@ -221,13 +221,13 @@ class Graph extends Component {
 
 	screenshot(a) {
 		console.log(a)
-		console.log("fired")
+		alert("fired")
 	}
 
 	render() {
 
 		return(
-			<ChartContainer dataPoints={ this.state } screenshot={ (a) => { this.screenshot.bind(this, a) }}></ChartContainer>
+			<ChartContainer dataPoints={ this.state } ></ChartContainer>
 		)
 	}
 }
