@@ -53,10 +53,8 @@ class Analysis extends Component {
 			<table className="highlight striped">
 				<thead>
 					<tr>
-						<td>Measure</td>
-					</tr>
-					<tr>
-						<td>Value</td>
+						<th>Measure</th>
+						<th>Value</th>
 					</tr>
 				</thead>
 				<tbody>
