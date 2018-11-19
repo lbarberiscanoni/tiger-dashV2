@@ -48,7 +48,7 @@ class Analysis extends Component {
 	}
 
 	render() {
-		let vals = this.props.dataPoints.datasets[0].data; 
+		let vals = this.props.dataPoints.raw_data.datasets[0].data; 
 
 		return(
 			<table className="highlight striped">
@@ -91,11 +91,6 @@ class ChartContainer extends Component {
 		super(props);
 		this.state = {
 			"chartType": "line",
-			"chartOptions": {
-				"line": <LineChart data={this.props.dataPoints} key={Math.random()} height="300px" width="500px" />,
-				"bar": <BarChart data={this.props.dataPoints} key={Math.random()} height="300px" width="500px" />,
-				"radar": <RadarChart data={this.props.dataPoints} key={Math.random()} redraw height="300px" width="500px" />
-			}
 		}
 	}
 
@@ -110,11 +105,11 @@ class ChartContainer extends Component {
 		let MyChart
 
 		if (this.state.chartType === "line") {
-			MyChart = <LineChart data={this.props.dataPoints} height="300px" width="500px" />
+			MyChart = <LineChart data={ this.props.dataPoints.raw_data }height="300px" width="500px" />
 		} else if (this.state.chartType === "bar") {
-			MyChart = <BarChart data={this.props.dataPoints} height="300px" width="500px" />
+			MyChart = <BarChart data={ this.props.dataPoints.raw_data } height="300px" width="500px" />
 		} else if (this.state.chartType === "radar") {
-			MyChart = <RadarChart data={this.props.dataPoints} height="300px" width="500px" />
+			MyChart = <RadarChart data={ this.props.dataPoints.raw_data } height="300px" width="500px" />
 		}
 
 		return (
@@ -127,7 +122,7 @@ class ChartContainer extends Component {
 						<form>
 							<div className="col s4 m4 l4">
 								{
-									this.props.dataPoints.labels.map(x => {
+									this.props.dataPoints.original.labels.map(x => {
 										return <div key={ x }>
 											<label>
 												<input type="checkbox" className="filled-in" defaultChecked onClick={ this.props.toggleMonth(x) }/>
@@ -139,7 +134,7 @@ class ChartContainer extends Component {
 							</div>
 							<div className="col s4 m4 l4">
 								{
-									this.props.dataPoints.datasets.map(x => {
+									this.props.dataPoints.original.datasets.map(x => {
 										return <div key={ x["label"] }>
 											<label>
 												<input type="checkbox" defaultChecked />
@@ -268,17 +263,35 @@ class Graph extends Component {
 	toggleMonth(month) {
 		let raw_labels = this.state.raw_data.labels
 		let index = this.state.raw_data.labels.indexOf(month)
-		raw_labels.splice(index, 1)
-		console.log(raw_labels)
-
-
 		let newStuff = []
-		this.state.raw_data.datasets.map(x => {
-			x["data"].splice(index, 1)
-			newStuff.push(x)
-		})
 
-		console.log(newStuff)
+		if (index > -1) {
+			console.log("remove")
+			raw_labels.splice(index, 1)
+
+			this.state.raw_data.datasets.map(x => {
+				x["data"].splice(index, 1)
+				newStuff.push(x)
+			})
+		} else {
+			console.log('add')
+			raw_labels.push(month)
+
+			let newLabels = this.state.original.labels.filter(label => raw_labels.includes(label) )
+
+			raw_labels = newLabels
+
+			let dataPointIndex = this.state.original.labels.indexOf(month)
+
+			for (let i = 0; i < this.state.original.datasets.length; i++) {
+				let val = this.state.original.datasets[i]["data"][dataPointIndex]
+				this.state.raw_data.datasets[i]["data"].splice(newLabels.indexOf(month), 0, val)
+				console.log(this.state.raw_data.datasets[i])
+				newStuff.push(this.state.raw_data.datasets[i])
+			}
+
+			console.log(newStuff)
+		}
 
 		this.setState({
 			"raw_data": {
@@ -295,7 +308,7 @@ class Graph extends Component {
 	render() {
 
 		return(
-			<ChartContainer dataPoints={ this.state.raw_data } toggleMonth = { (month) => this.toggleMonth.bind(this, month) }></ChartContainer>
+			<ChartContainer dataPoints={ this.state } toggleMonth = { (month) => this.toggleMonth.bind(this, month) }></ChartContainer>
 		)
 	}
 }
