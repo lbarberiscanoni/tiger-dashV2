@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Line as LineChart, Bar as BarChart, Pie as PieChart, Radar as RadarChart} from 'react-chartjs';
+import Chart from "chart.js";
 import * as math from 'mathjs';
 
 class DropDown extends Component {
@@ -91,9 +92,9 @@ class ChartContainer extends Component {
 		this.state = {
 			"chartType": "line",
 			"chartOptions": {
-				"line": <LineChart data={this.props.dataPoints} options={null} height="300px" width="500px" />,
-				"bar": <BarChart data={this.props.dataPoints} options={null} height="300px" width="500px" />,
-				"radar": <RadarChart data={this.props.dataPoints} options={null} height="300px" width="500px" />
+				"line": <LineChart data={this.props.dataPoints} key={Math.random()} height="300px" width="500px" />,
+				"bar": <BarChart data={this.props.dataPoints} key={Math.random()} height="300px" width="500px" />,
+				"radar": <RadarChart data={this.props.dataPoints} key={Math.random()} redraw height="300px" width="500px" />
 			}
 		}
 	}
@@ -105,6 +106,16 @@ class ChartContainer extends Component {
 	}
 
 	render() {
+
+		let MyChart
+
+		if (this.state.chartType === "line") {
+			MyChart = <LineChart data={this.props.dataPoints} height="300px" width="500px" />
+		} else if (this.state.chartType === "bar") {
+			MyChart = <BarChart data={this.props.dataPoints} height="300px" width="500px" />
+		} else if (this.state.chartType === "radar") {
+			MyChart = <RadarChart data={this.props.dataPoints} height="300px" width="500px" />
+		}
 
 		return (
 			<div className="col s6 m6 l6">
@@ -119,7 +130,7 @@ class ChartContainer extends Component {
 									this.props.dataPoints.labels.map(x => {
 										return <div key={ x }>
 											<label>
-												<input type="checkbox" className="filled-in" defaultChecked />
+												<input type="checkbox" className="filled-in" defaultChecked onClick={ this.props.toggleMonth(x) }/>
 												<span>{ x }</span>
 											</label>
 										</div>
@@ -145,7 +156,7 @@ class ChartContainer extends Component {
 				</div>
 				<div className="row">
 					<div className="col s12 m12 l12">
-						{ this.state.chartOptions[this.state.chartType] }	
+						{ MyChart }
 					</div>
 				</div>
 				<div className="row">
@@ -185,49 +196,106 @@ class Graph extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-		    labels: ["January", "February", "March", "April", "May", "June", "July"],
-		    datasets: [
-		        {
-		            label: "2017",
-		            fillColor: "rgba(220,220,220,0.2)",
-					strokeColor: "rgba(220,220,220,1)",
-					pointColor: "rgba(220,220,220,1)",
-					pointStrokeColor: "#fff",
-					pointHighlightFill: "#fff",
-					pointHighlightStroke: "rgba(220,220,220,1)",
-		            pointHoverRadius: 5,
-		            pointRadius: 1,
-		            pointHitRadius: 10,
-		            data: [65, 59, 80, 81, 56, 55, 40],
-		            spanGaps: false,
-		        }, 
-		        {
-		            label: "2016",
-		            fillColor: "rgba(151,187,205,0.2)",
-					strokeColor: "rgba(151,187,205,1)",
-					pointColor: "rgba(151,187,205,1)",
-					pointStrokeColor: "#fff",
-					pointHighlightFill: "#fff",
-					pointHighlightStroke: "rgba(151,187,205,1)",
-		            pointHoverRadius: 5,
-		            pointRadius: 1,
-		            pointHitRadius: 10,
-		            data: [65, 20, 40, 21, 36, 15, 20],
-		            spanGaps: false,
-		        }
-			]
+			"original": {
+			    labels: ["January", "February", "March", "April", "May", "June", "July"],
+			    datasets: [
+			        {
+			            label: "2017",
+			            fillColor: "rgba(220,220,220,0.2)",
+						strokeColor: "rgba(220,220,220,1)",
+						pointColor: "rgba(220,220,220,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(220,220,220,1)",
+			            pointHoverRadius: 5,
+			            pointRadius: 1,
+			            pointHitRadius: 10,
+			            data: [65, 59, 80, 81, 56, 55, 40],
+			            spanGaps: false,
+			        }, 
+			        {
+			            label: "2016",
+			            fillColor: "rgba(151,187,205,0.2)",
+						strokeColor: "rgba(151,187,205,1)",
+						pointColor: "rgba(151,187,205,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(151,187,205,1)",
+			            pointHoverRadius: 5,
+			            pointRadius: 1,
+			            pointHitRadius: 10,
+			            data: [65, 20, 40, 21, 36, 15, 20],
+			            spanGaps: false,
+			        }
+				]
+			},
+			"raw_data": {
+			    labels: ["January", "February", "March", "April", "May", "June", "July"],
+			    datasets: [
+			        {
+			            label: "2017",
+			            fillColor: "rgba(220,220,220,0.2)",
+						strokeColor: "rgba(220,220,220,1)",
+						pointColor: "rgba(220,220,220,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(220,220,220,1)",
+			            pointHoverRadius: 5,
+			            pointRadius: 1,
+			            pointHitRadius: 10,
+			            data: [65, 59, 80, 81, 56, 55, 40],
+			            spanGaps: false,
+			        }, 
+			        {
+			            label: "2016",
+			            fillColor: "rgba(151,187,205,0.2)",
+						strokeColor: "rgba(151,187,205,1)",
+						pointColor: "rgba(151,187,205,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(151,187,205,1)",
+			            pointHoverRadius: 5,
+			            pointRadius: 1,
+			            pointHitRadius: 10,
+			            data: [65, 20, 40, 21, 36, 15, 20],
+			            spanGaps: false,
+			        }
+				]
+			}
 		}
 	}
 
-	screenshot(a) {
-		console.log(a)
-		alert("fired")
+	toggleMonth(month) {
+		let raw_labels = this.state.raw_data.labels
+		let index = this.state.raw_data.labels.indexOf(month)
+		raw_labels.splice(index, 1)
+		console.log(raw_labels)
+
+
+		let newStuff = []
+		this.state.raw_data.datasets.map(x => {
+			x["data"].splice(index, 1)
+			newStuff.push(x)
+		})
+
+		console.log(newStuff)
+
+		this.setState({
+			"raw_data": {
+				"labels": raw_labels,
+				"datasets": newStuff
+			}
+		})
+
+
+
+		console.log(this.state)
 	}
 
 	render() {
 
 		return(
-			<ChartContainer dataPoints={ this.state } ></ChartContainer>
+			<ChartContainer dataPoints={ this.state.raw_data } toggleMonth = { (month) => this.toggleMonth.bind(this, month) }></ChartContainer>
 		)
 	}
 }
