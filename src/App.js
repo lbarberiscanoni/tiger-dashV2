@@ -5,19 +5,97 @@ import UploadComponent from "./DataUpload";
 import ResourceMap from "./ResourceMap";
 import QPanel from "./Queries";
 
+
 const Index = () => <div className="row"><Graph key="1"/><Graph key="2"/></div>
 const Map = () => <div className="row"><h2 className="center-align">Resource Availability</h2><ResourceMap /></div>
 const Saved = () => <div className="row"><h2 className="center-align">All of Your Queries in One Place</h2><QPanel /></div>
 const Upload = () => <div className="row"><h2 className="center-align">Upload New Data to the App</h2><UploadComponent /></div>
-
 
 class App extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      queries: []
+      queries: [
+        {
+          graphData: {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+              datasets: [
+                  {
+                      label: "2017",
+                      fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                      pointHoverRadius: 5,
+                      pointRadius: 1,
+                      pointHitRadius: 10,
+                      data: [65, 59, 80, 81, 56, 55, 40],
+                      spanGaps: false,
+                  }
+              ]
+          },
+          graphType: "line",
+          date: "2018-11-03"
+        },
+        {
+          graphData: {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+              datasets: [
+                  {
+                      label: "2018",
+                      fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                      pointHoverRadius: 5,
+                      pointRadius: 1,
+                      pointHitRadius: 10,
+                      data: [65, 59, 80, 81, 56, 55, 40],
+                      spanGaps: false,
+                  }
+              ]
+          },
+          graphType: "radar",
+          date: "2018-11-02"
+        },
+        {
+          graphData: {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+              datasets: [
+                  {
+                      label: "2019",
+                      fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                      pointHoverRadius: 5,
+                      pointRadius: 1,
+                      pointHitRadius: 10,
+                      data: [65, 59, 80, 81, 56, 55, 40],
+                      spanGaps: false,
+                  }
+              ]
+          },
+          graphType: "bar",
+          date: "2018-11-05"
+        }
+      ]
     }
+  }
+
+  saveQuery(ob) {
+    let lastState = this.state.queries
+    lastState.push(ob)
+    this.setState({
+      "queries": lastState
+    })
   }
 
   render() {
@@ -51,10 +129,10 @@ class App extends Component {
             </div>
 
             <div className="col s11 m10 l11" style={{ flex: 1 }}>
-                <Route path="/" exact component={Index} />
-                <Route path="/map/" component={Map} />
-                <Route path="/saved/" component={Saved} />
-                <Route path="/upload/" component={Upload} />
+                <Route path="/" exact component={ () => <div className="row"><Graph saveQuery={ (ob) => this.saveQuery.bind(this, ob) } key="1"/><Graph saveQuery={ (ob) => this.saveQuery.bind(this, ob) } key="2"/></div> } />
+                <Route path="/map/" component={ () => <div className="row"><h2 className="center-align">Resource Availability</h2><ResourceMap /></div> } />
+                <Route path="/saved/" component={ () => <div className="row"><h2 className="center-align">All of Your Queries in One Place</h2><QPanel queries={ this.state.queries } /></div> } />
+                <Route path="/upload/" component={ () => <div className="row"><h2 className="center-align">Upload New Data to the App</h2><UploadComponent /></div> } />
             </div>
           </div>
         </Router>

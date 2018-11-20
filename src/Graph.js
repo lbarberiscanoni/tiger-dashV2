@@ -13,24 +13,24 @@ class DropDown extends Component {
 		
 		return(
 			<div className="col s12 m12 l12 center-align">
-				<a className="dropdown-trigger btn" data-target="dropdown">Chart Type</a>
+				<a href="#" className="dropdown-trigger btn" data-target="dropdown">Chart Type</a>
 				<ul id="dropdown" className="dropdown-content">
 					<li onClick={ this.props.changeChart("line") }>
-						<a>
+						<a href='#'>
 							Line
 							<i className="material-icons right">show_chart</i>
 						</a>
 					</li>
 					<li className="divider"></li>
 					<li onClick={ this.props.changeChart("bar") }>
-						<a>
+						<a href='#'>
 							Bar
 							<i className="material-icons right">insert_chart</i>
 						</a>
 					</li>
 					<li className="divider"></li>
 					<li onClick={ this.props.changeChart("radar") }>
-						<a>
+						<a href='#'>
 							Radar
 							<i className="material-icons right">bubble_chart</i>
 						</a>
@@ -48,37 +48,32 @@ class Analysis extends Component {
 	}
 
 	render() {
-		let vals = this.props.dataPoints.raw_data.datasets[0].data; 
 
 		return(
 			<table className="highlight striped">
 				<thead>
 					<tr>
-						<th>Measure</th>
-						<th>Value</th>
+						<th></th>
+						<th>Mean</th>
+						<th>Median</th>
+						<th>Standard Deviation</th>
+						<th>Max</th>
+						<th>Min</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<th>Mean</th>
-						<td> { math.round(math.mean(vals), 2) } </td>
-					</tr>
-					<tr>
-						<th>Median</th>
-						<td> { math.round(math.median(vals), 2) } </td>
-					</tr>
-					<tr>
-						<th>Standard Deviation</th>
-						<td> { math.round(math.std(vals), 2) } </td>
-					</tr>
-					<tr>
-						<th>Max</th>
-						<td> { math.round(math.max(vals), 2) } </td>
-					</tr>
-					<tr>
-						<th>Min</th>
-						<td> { math.round(math.min(vals), 2) } </td>
-					</tr>
+					{ 
+						this.props.dataPoints.raw_data.datasets.map(x => {
+							return <tr>
+								<th>{ x.label } </th>
+								<td> { math.round(math.mean(x.data), 2) } </td>
+								<td> { math.round(math.median(x.data), 2) } </td>
+								<td> { math.round(math.std(x.data), 2) } </td>
+								<td> { math.round(math.max(x.data), 2) } </td>
+								<td> { math.round(math.min(x.data), 2) } </td>
+							</tr>
+						})
+					}
 				</tbody>
 			</table>
 		)
@@ -100,12 +95,20 @@ class ChartContainer extends Component {
 		})
 	}
 
+	saveChart() {
+		alert("saved!")
+		console.log(this.state.chartType)
+		let now = new Date()
+		let date = now.toString().split(" ").slice(1,5).join("-")
+		console.log(date)
+	}
+
 	render() {
 
 		let MyChart
 
 		if (this.state.chartType === "line") {
-			MyChart = <LineChart data={ this.props.dataPoints.raw_data }height="300px" width="500px" />
+			MyChart = <LineChart data={ this.props.dataPoints.raw_data } height="300px" width="500px" />
 		} else if (this.state.chartType === "bar") {
 			MyChart = <BarChart data={ this.props.dataPoints.raw_data } height="300px" width="500px" />
 		} else if (this.state.chartType === "radar") {
@@ -137,7 +140,7 @@ class ChartContainer extends Component {
 									this.props.dataPoints.original.datasets.map(x => {
 										return <div key={ x["label"] }>
 											<label>
-												<input type="checkbox" defaultChecked />
+												<input type="checkbox" defaultChecked onClick={ this.props.toggleYear(x["label"]) }/>
 												<span>{ x["label"] }</span>
 											</label>
 										</div>
@@ -155,8 +158,8 @@ class ChartContainer extends Component {
 					</div>
 				</div>
 				<div className="row">
-					<div className="col s3 m3 l3"></div>
-					<div className="col s6 m6 l6">
+					<div className="col s1 m1 l1"></div>
+					<div className="col s10 m10 l10">
 						<ul className="collapsible">
 							<li>
 								<div className="collapsible-header">
@@ -169,12 +172,12 @@ class ChartContainer extends Component {
 							</li>
 						</ul>
 					</div>
-					<div className="col s3 m3 l3"></div>
+					<div className="col s1 m1 l1"></div>
 				</div>
 				<div className="row">
 					<div className="col s4 m4 l4"></div>
 					<div className="col s4 m4 l4">
-						<button className="btn waves-effect waves-light" onClick={ () => { alert("saved!") } } > 
+						<button className="btn waves-effect waves-light" onClick={ this.saveChart.bind(this) } > 
 							SAVE
 							<i className="material-icons right">save</i>
 						</button>
@@ -260,13 +263,44 @@ class Graph extends Component {
 		}
 	}
 
+	toggleYear(year) {
+
+		let newStuff = this.state.raw_data.datasets
+		let yearList = []
+		this.state.raw_data.datasets.map(x => {
+			yearList.push(x.label)
+		})
+
+		if (yearList.includes(year)) {
+			newStuff = this.state.raw_data.datasets.splice(yearList.indexOf(year), 1)
+		} else {
+			let fullYearList = []
+			this.state.raw_data.datasets.map(x => {
+				fullYearList.push(x.label)
+			})
+
+			let dataPoint = this.state.original.datasets[fullYearList.indexOf(year)]
+			newStuff.push(dataPoint)
+		}
+
+		let raw_labels = this.state.raw_data.labels
+
+		this.setState({
+			"raw_data": {
+				"labels": raw_labels,
+				"datasets": newStuff
+			}
+		})
+
+		console.log("here", this.state)
+	}
+
 	toggleMonth(month) {
 		let raw_labels = this.state.raw_data.labels
 		let index = this.state.raw_data.labels.indexOf(month)
 		let newStuff = []
 
 		if (index > -1) {
-			console.log("remove")
 			raw_labels.splice(index, 1)
 
 			this.state.raw_data.datasets.map(x => {
@@ -274,7 +308,6 @@ class Graph extends Component {
 				newStuff.push(x)
 			})
 		} else {
-			console.log('add')
 			raw_labels.push(month)
 
 			let newLabels = this.state.original.labels.filter(label => raw_labels.includes(label) )
@@ -286,7 +319,6 @@ class Graph extends Component {
 			for (let i = 0; i < this.state.original.datasets.length; i++) {
 				let val = this.state.original.datasets[i]["data"][dataPointIndex]
 				this.state.raw_data.datasets[i]["data"].splice(newLabels.indexOf(month), 0, val)
-				console.log(this.state.raw_data.datasets[i])
 				newStuff.push(this.state.raw_data.datasets[i])
 			}
 
@@ -299,16 +331,12 @@ class Graph extends Component {
 				"datasets": newStuff
 			}
 		})
-
-
-
-		console.log(this.state)
 	}
 
 	render() {
 
 		return(
-			<ChartContainer dataPoints={ this.state } toggleMonth = { (month) => this.toggleMonth.bind(this, month) }></ChartContainer>
+			<ChartContainer dataPoints={ this.state } toggleMonth= { (month) => this.toggleMonth.bind(this, month) } toggleYear= { (year) => this.toggleYear.bind(this, year) } saveQuery={ (ob) => this.props.saveQuery.bind(this, ob) } ></ChartContainer>
 		)
 	}
 }

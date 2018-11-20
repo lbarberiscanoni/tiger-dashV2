@@ -6,77 +6,7 @@ class QPanel extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			queries: [
-				{
-					graphData: {
-						labels: ["January", "February", "March", "April", "May", "June", "July"],
-					    datasets: [
-					        {
-					            label: "2017",
-					            fillColor: "rgba(220,220,220,0.2)",
-								strokeColor: "rgba(220,220,220,1)",
-								pointColor: "rgba(220,220,220,1)",
-								pointStrokeColor: "#fff",
-								pointHighlightFill: "#fff",
-								pointHighlightStroke: "rgba(220,220,220,1)",
-					            pointHoverRadius: 5,
-					            pointRadius: 1,
-					            pointHitRadius: 10,
-					            data: [65, 59, 80, 81, 56, 55, 40],
-					            spanGaps: false,
-					        }
-					    ]
-					},
-					graphType: "line",
-					date: "2018-11-03"
-				},
-				{
-					graphData: {
-						labels: ["January", "February", "March", "April", "May", "June", "July"],
-					    datasets: [
-					        {
-					            label: "2018",
-					            fillColor: "rgba(220,220,220,0.2)",
-								strokeColor: "rgba(220,220,220,1)",
-								pointColor: "rgba(220,220,220,1)",
-								pointStrokeColor: "#fff",
-								pointHighlightFill: "#fff",
-								pointHighlightStroke: "rgba(220,220,220,1)",
-					            pointHoverRadius: 5,
-					            pointRadius: 1,
-					            pointHitRadius: 10,
-					            data: [65, 59, 80, 81, 56, 55, 40],
-					            spanGaps: false,
-					        }
-					    ]
-					},
-					graphType: "radar",
-					date: "2018-11-02"
-				},
-				{
-					graphData: {
-						labels: ["January", "February", "March", "April", "May", "June", "July"],
-					    datasets: [
-					        {
-					            label: "2019",
-					            fillColor: "rgba(220,220,220,0.2)",
-								strokeColor: "rgba(220,220,220,1)",
-								pointColor: "rgba(220,220,220,1)",
-								pointStrokeColor: "#fff",
-								pointHighlightFill: "#fff",
-								pointHighlightStroke: "rgba(220,220,220,1)",
-					            pointHoverRadius: 5,
-					            pointRadius: 1,
-					            pointHitRadius: 10,
-					            data: [65, 59, 80, 81, 56, 55, 40],
-					            spanGaps: false,
-					        }
-					    ]
-					},
-					graphType: "bar",
-					date: "2018-11-05"
-				}
-			], 
+			queries: this.props.queries,
 			currentGraph: {
 				"graphType": "",	
 				"date": ""
