@@ -6,11 +6,6 @@ import ResourceMap from "./ResourceMap";
 import QPanel from "./Queries";
 
 
-const Index = () => <div className="row"><Graph key="1"/><Graph key="2"/></div>
-const Map = () => <div className="row"><h2 className="center-align">Resource Availability</h2><ResourceMap /></div>
-const Saved = () => <div className="row"><h2 className="center-align">All of Your Queries in One Place</h2><QPanel /></div>
-const Upload = () => <div className="row"><h2 className="center-align">Upload New Data to the App</h2><UploadComponent /></div>
-
 class App extends Component {
 
   constructor(props) {
@@ -38,7 +33,8 @@ class App extends Component {
               ]
           },
           graphType: "line",
-          date: "2018-11-03"
+          date: "2018-11-03", 
+          show: false,
         },
         {
           graphData: {
@@ -105,7 +101,7 @@ class App extends Component {
         <div className="row">
           <h5 className="brand-logo center">Tiger Dash</h5>
         </div>
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
           <div className="row" style={{ display: "flex" }}>
             <div className="col s1 m2 l1" style={{ width: "20%" }}>
               <div className="nav-wrapper">
@@ -129,7 +125,7 @@ class App extends Component {
             </div>
 
             <div className="col s11 m10 l11" style={{ flex: 1 }}>
-                <Route path="/" exact component={ () => <div className="row"><Graph saveQuery={ (ob) => this.saveQuery.bind(this, ob) } key="1"/><Graph saveQuery={ (ob) => this.saveQuery.bind(this, ob) } key="2"/></div> } />
+                <Route path="/" exact component={ () => <div className="row"><Graph saveQuery={ (ob) => this.saveQuery.bind(this, ob) } key="1"/></div> } />
                 <Route path="/map/" component={ () => <div className="row"><h2 className="center-align">Resource Availability</h2><ResourceMap /></div> } />
                 <Route path="/saved/" component={ () => <div className="row"><h2 className="center-align">All of Your Queries in One Place</h2><QPanel queries={ this.state.queries } /></div> } />
                 <Route path="/upload/" component={ () => <div className="row"><h2 className="center-align">Upload New Data to the App</h2><UploadComponent /></div> } />

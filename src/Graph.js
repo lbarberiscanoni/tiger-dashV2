@@ -108,82 +108,86 @@ class ChartContainer extends Component {
 		let MyChart
 
 		if (this.state.chartType === "line") {
-			MyChart = <LineChart data={ this.props.dataPoints.raw_data } height="300px" width="500px" />
+			MyChart = <LineChart data={ this.props.dataPoints.raw_data } height="300px" width="600px" />
 		} else if (this.state.chartType === "bar") {
-			MyChart = <BarChart data={ this.props.dataPoints.raw_data } height="300px" width="500px" />
+			MyChart = <BarChart data={ this.props.dataPoints.raw_data } height="300px" width="600px" />
 		} else if (this.state.chartType === "radar") {
-			MyChart = <RadarChart data={ this.props.dataPoints.raw_data } height="300px" width="500px" />
+			MyChart = <RadarChart data={ this.props.dataPoints.raw_data } height="300px" width="600px" />
 		}
 
 		return (
-			<div className="col s6 m6 l6">
-				<div className="row">
-					<DropDown changeChart={ (a) => this.changeChart.bind(this, a) } />
-				</div>
-				<div className="row">
-					<div className="col s12 m12 l12">
-						<form>
-							<div className="col s4 m4 l4">
-								{
-									this.props.dataPoints.original.labels.map(x => {
-										return <div key={ x }>
-											<label>
-												<input type="checkbox" className="filled-in" defaultChecked onClick={ this.props.toggleMonth(x) }/>
-												<span>{ x }</span>
-											</label>
-										</div>
-									})
-								}
-							</div>
-							<div className="col s4 m4 l4">
-								{
-									this.props.dataPoints.original.datasets.map(x => {
-										return <div key={ x["label"] }>
-											<label>
-												<input type="checkbox" defaultChecked onClick={ this.props.toggleYear(x["label"]) }/>
-												<span>{ x["label"] }</span>
-											</label>
-										</div>
-									})
-								}
-							</div>
-							<div className="col s4 m4 l4">
-							</div>
-						</form>
+			<div>
+				<div className="col s3 m3 l3"></div>
+				<div className="col s6 m6 l6">
+					<div className="row">
+						<DropDown changeChart={ (a) => this.changeChart.bind(this, a) } />
 					</div>
-				</div>
-				<div className="row">
-					<div className="col s12 m12 l12">
-						{ MyChart }
-					</div>
-				</div>
-				<div className="row">
-					<div className="col s1 m1 l1"></div>
-					<div className="col s10 m10 l10">
-						<ul className="collapsible">
-							<li>
-								<div className="collapsible-header">
-									REPORT
-									<i className="material-icons right">subject</i>
+					<div className="row">
+						<div className="col s12 m12 l12">
+							<form>
+								<div className="col s4 m4 l4">
+									{
+										this.props.dataPoints.original.labels.map(x => {
+											return <div key={ x }>
+												<label>
+													<input type="checkbox" className="filled-in" defaultChecked onClick={ this.props.toggleMonth(x) }/>
+													<span>{ x }</span>
+												</label>
+											</div>
+										})
+									}
 								</div>
-								<div className="collapsible-body">
-									<Analysis dataPoints={this.props.dataPoints} />
+								<div className="col s4 m4 l4">
+									{
+										this.props.dataPoints.original.datasets.map(x => {
+											return <div key={ x["label"] }>
+												<label>
+													<input type="checkbox" defaultChecked onClick={ this.props.toggleYear(x["label"]) }/>
+													<span>{ x["label"] }</span>
+												</label>
+											</div>
+										})
+									}
 								</div>
-							</li>
-						</ul>
+								<div className="col s4 m4 l4">
+								</div>
+							</form>
+						</div>
 					</div>
-					<div className="col s1 m1 l1"></div>
-				</div>
-				<div className="row">
-					<div className="col s4 m4 l4"></div>
-					<div className="col s4 m4 l4">
-						<button className="btn waves-effect waves-light" onClick={ this.saveChart.bind(this) } > 
-							SAVE
-							<i className="material-icons right">save</i>
-						</button>
+					<div className="row">
+						<div className="col s12 m12 l12">
+							{ MyChart }
+						</div>
 					</div>
-					<div className="col s4 m4 l4"></div>
+					<div className="row">
+						<div className="col s1 m1 l1"></div>
+						<div className="col s10 m10 l10">
+							<ul className="collapsible">
+								<li>
+									<div className="collapsible-header">
+										REPORT
+										<i className="material-icons right">subject</i>
+									</div>
+									<div className="collapsible-body">
+										<Analysis dataPoints={this.props.dataPoints} />
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div className="col s1 m1 l1"></div>
+					</div>
+					<div className="row">
+						<div className="col s4 m4 l4"></div>
+						<div className="col s4 m4 l4">
+							<button className="btn waves-effect waves-light" onClick={ this.saveChart.bind(this) } > 
+								SAVE
+								<i className="material-icons right">save</i>
+							</button>
+						</div>
+						<div className="col s4 m4 l4"></div>
+					</div>
 				</div>
+				<div className="col s3 m3 l3"></div>
 			</div>
 		)
 	}
