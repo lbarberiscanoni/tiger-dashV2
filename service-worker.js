@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/tiger-dashV2/precache-manifest.aad5418e46b27adbc606efb758066882.js"
+  "/tiger-dashV2/precache-manifest.41ae990e1c590df74aa545ae7e71d61c.js"
 );
 
 workbox.clientsClaim();
