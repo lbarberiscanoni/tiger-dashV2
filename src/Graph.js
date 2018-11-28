@@ -96,7 +96,7 @@ class Graph extends Component {
 		let dataPoints = {
 			"possibleLabels": possibleLabels,
 			"labels": labels,
-			"datasets": []
+			"datasets": [], 
 		}
 
 
@@ -118,17 +118,14 @@ class Graph extends Component {
 				} else {
 					color.map((x) => {
 						let complement = color.sort()[1] + color.sort()[color.length - 1]
-						console.log(complement, x)
 						newColor.push(complement - x)
 					})
 					colorString = "rgba(" + newColor.join(",") + ", .8)"
 				}
 
-
-
 				dataPoints["datasets"].push(
 					{
-						label: year, 
+						label: year,
 						fillColor: colorString, 
 						strokeColor: colorString, 
 						pointColor: colorString, 
@@ -140,6 +137,7 @@ class Graph extends Component {
 						pointHitRadius: 10,
 						spanGaps: false, 
 						data: relevantVals,
+						
 					}
 				)
 
@@ -148,8 +146,8 @@ class Graph extends Component {
 		})
 
 		this.state = {
-			"chartType": "line",
-			"dataPoints": dataPoints
+			"chartType": this.props.chartType,
+			"dataPoints": dataPoints,
 		}
 
 	}
@@ -161,8 +159,9 @@ class Graph extends Component {
 	}
 
 	render() {
-		console.log(this.state)
 		let MyChart
+
+		console.log(this.state)
 
 		if (this.state.chartType === "line") {
 			MyChart = <LineChart data={ this.state.dataPoints } height="300px" width="600px" />
@@ -177,7 +176,31 @@ class Graph extends Component {
 				<div className="col s3 m3 l3"></div>
 				<div className="col s6 m6 l6">
 					<div className="row">
-						<DropDown changeChart={ (a) => this.changeChart.bind(this, a) } />
+						<div className="col s12 m12 l12 center-align">
+							<a href="#" className="dropdown-trigger btn" data-target="dropdown">Chart Type</a>
+							<ul id="dropdown" className="dropdown-content">
+								<li onClick={ this.props.toggle("chart", "line") }>
+									<a href='#'>
+										Line
+										<i className="material-icons right">show_chart</i>
+									</a>
+								</li>
+								<li className="divider"></li>
+								<li onClick={ this.props.toggle("chart", "bar") }>
+									<a href='#'>
+										Bar
+										<i className="material-icons right">insert_chart</i>
+									</a>
+								</li>
+								<li className="divider"></li>
+								<li onClick={ this.props.toggle("chart", "radar") }>
+									<a href='#'>
+										Radar
+										<i className="material-icons right">bubble_chart</i>
+									</a>
+								</li>
+							</ul>
+						</div>
 					</div>
 					<div className="row">
 						<div className="col s12 m12 l12">

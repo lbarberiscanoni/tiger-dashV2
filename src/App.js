@@ -11,6 +11,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      chartType: "line",
       dataPoints: {
         "2017": {
           display: true,
@@ -87,16 +88,20 @@ class App extends Component {
       })
 
       this.setState(this.state)
-    } else {
+    } else if (category === "year") {
       this.state.dataPoints[target].display = !this.state.dataPoints[target].display
       this.setState(this.state)
+    } else {
+      console.log("fuck", target)
+      this.setState({
+        "chartType": target
+      })
+
     }
 
   }
 
   render() {
-
-    console.log(this.state)
 
     return(
       <div>
@@ -127,7 +132,7 @@ class App extends Component {
             </div>
 
             <div className="col s11 m10 l11" style={{ flex: 1 }}>
-                <Route path="/" exact component={ () => <div className="row"><Graph global={ this.state.dataPoints } saveQuery={ (ob) => this.saveQuery.bind(this, ob) } toggle={ (a, b) => this.toggle.bind(this, a, b) } /></div> } />
+                <Route path="/" exact component={ () => <div className="row"><Graph global={ this.state.dataPoints } chartType={ this.state.chartType } saveQuery={ (ob) => this.saveQuery.bind(this, ob) } toggle={ (a, b) => this.toggle.bind(this, a, b) } /></div> } />
                 <Route path="/map/" component={ () => <div className="row"><h2 className="center-align">Resource Availability</h2><ResourceMap /></div> } />
                 <Route path="/saved/" component={ () => <div className="row"><h2 className="center-align">All of Your Queries in One Place</h2><QPanel queries={ this.state.queries } /></div> } />
                 <Route path="/upload/" component={ () => <UploadComponent /> } />
