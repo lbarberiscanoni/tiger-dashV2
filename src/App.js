@@ -11,6 +11,58 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      dataPoints: {
+        "2017": {
+          display: true,
+          values: {
+            "January": {
+              display: true,
+              data: 65
+            }, 
+            "February": {
+              display: true,
+              data: 65
+            }, 
+            "March": {
+              display: true,
+              data: 59
+            }, 
+            "April": {
+              display: true,
+              data: 80
+            }, 
+            "May": {
+              display: true,
+              data: 45
+            }, 
+          }
+        },
+        "2018": {
+          display: true,
+          values: {
+            "January": {
+              display: true,
+              data: 45
+            }, 
+            "February": {
+              display: true,
+              data: 25
+            }, 
+            "March": {
+              display: true,
+              data: 59
+            }, 
+            "April": {
+              display: true,
+              data: 30
+            }, 
+            "May": {
+              display: true,
+              data: 45
+            }, 
+          }
+        },
+      },
       queries: [
         {
           graphData: {
@@ -19,11 +71,11 @@ class App extends Component {
                   {
                       label: "2017",
                       fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
+                      strokeColor: "rgba(220,220,220,1)",
+                      pointColor: "rgba(220,220,220,1)",
+                      pointStrokeColor: "#fff",
+                      pointHighlightFill: "#fff",
+                      pointHighlightStroke: "rgba(220,220,220,1)",
                       pointHoverRadius: 5,
                       pointRadius: 1,
                       pointHitRadius: 10,
@@ -35,52 +87,6 @@ class App extends Component {
           graphType: "line",
           date: "2018-11-03", 
           show: false,
-        },
-        {
-          graphData: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-              datasets: [
-                  {
-                      label: "2018",
-                      fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                      pointHoverRadius: 5,
-                      pointRadius: 1,
-                      pointHitRadius: 10,
-                      data: [65, 59, 80, 81, 56, 55, 40],
-                      spanGaps: false,
-                  }
-              ]
-          },
-          graphType: "radar",
-          date: "2018-11-02"
-        },
-        {
-          graphData: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-              datasets: [
-                  {
-                      label: "2019",
-                      fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                      pointHoverRadius: 5,
-                      pointRadius: 1,
-                      pointHitRadius: 10,
-                      data: [65, 59, 80, 81, 56, 55, 40],
-                      spanGaps: false,
-                  }
-              ]
-          },
-          graphType: "bar",
-          date: "2018-11-05"
         }
       ]
     }
@@ -94,7 +100,24 @@ class App extends Component {
     })
   }
 
+  toggle(category, target) {
+    console.log(category, target)
+    if (category === "month") {
+      Object.keys(this.state.dataPoints).map((year) => {
+        this.state.dataPoints[year].values[target].display = !this.state.dataPoints[year].values[target].display
+      })
+
+      this.setState(this.state)
+    } else {
+      this.state.dataPoints[target].display = !this.state.dataPoints[target].display
+      this.setState(this.state)
+    }
+
+  }
+
   render() {
+
+    console.log(this.state)
 
     return(
       <div>
@@ -125,7 +148,7 @@ class App extends Component {
             </div>
 
             <div className="col s11 m10 l11" style={{ flex: 1 }}>
-                <Route path="/" exact component={ () => <div className="row"><Graph saveQuery={ (ob) => this.saveQuery.bind(this, ob) } key="1"/></div> } />
+                <Route path="/" exact component={ () => <div className="row"><Graph global={ this.state.dataPoints } saveQuery={ (ob) => this.saveQuery.bind(this, ob) } toggle={ (a, b) => this.toggle.bind(this, a, b) } /></div> } />
                 <Route path="/map/" component={ () => <div className="row"><h2 className="center-align">Resource Availability</h2><ResourceMap /></div> } />
                 <Route path="/saved/" component={ () => <div className="row"><h2 className="center-align">All of Your Queries in One Place</h2><QPanel queries={ this.state.queries } /></div> } />
                 <Route path="/upload/" component={ () => <div className="row"><h2 className="center-align">Upload New Data to the App</h2><UploadComponent /></div> } />

@@ -63,7 +63,7 @@ class Analysis extends Component {
 				</thead>
 				<tbody>
 					{ 
-						this.props.dataPoints.raw_data.datasets.map(x => {
+						this.props.dataPoints.datasets.map(x => {
 							return <tr>
 								<th>{ x.label } </th>
 								<td> { math.round(math.mean(x.data), 2) } </td>
@@ -80,7 +80,7 @@ class Analysis extends Component {
 	}
 }
 
-class ChartContainer extends Component {
+class Graph extends Component {
 
 	constructor(props) {
 		super(props);
@@ -95,29 +95,63 @@ class ChartContainer extends Component {
 		})
 	}
 
-	saveChart() {
-		alert("saved!")
-		console.log(this.state.chartType)
-		let now = new Date()
-		let date = now.toString().split(" ").slice(1,5).join("-")
-		console.log(date)
-	}
-
 	render() {
-
 		let MyChart
 
+
+		let possibleLabels = this.props.global[Object.keys(this.props.global)[0]].values
+		let labels = []
+		Object.keys(possibleLabels).map((x) => {
+			if (possibleLabels[x].display === true) {
+				labels.push(x)
+			}
+		})
+
+		let dataPoints = {
+			"labels": labels,
+			"datasets": []
+		}
+
+		Object.keys(this.props.global).map((year) => {
+			if (this.props.global[year].display === true) {
+				let relevantVals = []
+				Object.keys(this.props.global[year].values).map((val) => {
+					if (this.props.global[year].values[val].display === true) {
+						relevantVals.push(this.props.global[year].values[val].data)
+					}
+				})
+				dataPoints["datasets"].push(
+					{
+						label: year, 
+						fillColor: "rgba(220,220,220,0.2)",
+						strokeColor: "rgba(220,220,220,1)",
+						pointColor: "rgba(220,220,220,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(220,220,220,1)",
+						pointHoverRadius: 5,
+						pointRadius: 1,
+						pointHitRadius: 10,
+						spanGaps: false, 
+						data: relevantVals,
+					}
+				)
+			}
+		})
+
 		if (this.state.chartType === "line") {
-			MyChart = <LineChart data={ this.props.dataPoints.raw_data } height="300px" width="600px" />
+			MyChart = <LineChart data={ dataPoints } height="300px" width="600px" />
 		} else if (this.state.chartType === "bar") {
-			MyChart = <BarChart data={ this.props.dataPoints.raw_data } height="300px" width="600px" />
+			MyChart = <BarChart data={ dataPoints } height="300px" width="600px" />
 		} else if (this.state.chartType === "radar") {
-			MyChart = <RadarChart data={ this.props.dataPoints.raw_data } height="300px" width="600px" />
+			MyChart = <RadarChart data={ dataPoints } height="300px" width="600px" />
 		}
 
 		return (
 			<div>
-				<div className="col s3 m3 l3"></div>
+				<div className="col s3 m3 l3">
+					<button onClick={ this.props.toggle("month", "April") }>Test</button>
+				</div>
 				<div className="col s6 m6 l6">
 					<div className="row">
 						<DropDown changeChart={ (a) => this.changeChart.bind(this, a) } />
@@ -127,23 +161,23 @@ class ChartContainer extends Component {
 							<form>
 								<div className="col s4 m4 l4">
 									{
-										this.props.dataPoints.original.labels.map(x => {
+										Object.keys(possibleLabels).map(x => {
 											return <div key={ x }>
 												<label>
-													<input type="checkbox" className="filled-in" defaultChecked onClick={ this.props.toggleMonth(x) }/>
+													<input type="checkbox" className="filled-in" defaultChecked={ possibleLabels[x].display } onClick={ this.props.toggle("month", x) } />
 													<span>{ x }</span>
 												</label>
-											</div>
+											</div>											
 										})
 									}
 								</div>
 								<div className="col s4 m4 l4">
 									{
-										this.props.dataPoints.original.datasets.map(x => {
-											return <div key={ x["label"] }>
+										Object.keys(this.props.global).map(x => {
+											return <div key={ x }>
 												<label>
-													<input type="checkbox" defaultChecked onClick={ this.props.toggleYear(x["label"]) }/>
-													<span>{ x["label"] }</span>
+													<input type="checkbox" defaultChecked={ this.props.global[x].display } onClick={ this.props.toggle("year", x) } />
+													<span>{ x }</span>
 												</label>
 											</div>
 										})
@@ -169,7 +203,7 @@ class ChartContainer extends Component {
 										<i className="material-icons right">subject</i>
 									</div>
 									<div className="collapsible-body">
-										<Analysis dataPoints={this.props.dataPoints} />
+										<Analysis dataPoints={ dataPoints } />
 									</div>
 								</li>
 							</ul>
@@ -179,7 +213,7 @@ class ChartContainer extends Component {
 					<div className="row">
 						<div className="col s4 m4 l4"></div>
 						<div className="col s4 m4 l4">
-							<button className="btn waves-effect waves-light" onClick={ this.saveChart.bind(this) } > 
+							<button className="btn waves-effect waves-light" > 
 								SAVE
 								<i className="material-icons right">save</i>
 							</button>
@@ -189,158 +223,6 @@ class ChartContainer extends Component {
 				</div>
 				<div className="col s3 m3 l3"></div>
 			</div>
-		)
-	}
-}
-
-class Graph extends Component {
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			"original": {
-			    labels: ["January", "February", "March", "April", "May", "June", "July"],
-			    datasets: [
-			        {
-			            label: "2017",
-			            fillColor: "rgba(220,220,220,0.2)",
-						strokeColor: "rgba(220,220,220,1)",
-						pointColor: "rgba(220,220,220,1)",
-						pointStrokeColor: "#fff",
-						pointHighlightFill: "#fff",
-						pointHighlightStroke: "rgba(220,220,220,1)",
-			            pointHoverRadius: 5,
-			            pointRadius: 1,
-			            pointHitRadius: 10,
-			            data: [65, 59, 80, 81, 56, 55, 40],
-			            spanGaps: false,
-			        }, 
-			        {
-			            label: "2016",
-			            fillColor: "rgba(151,187,205,0.2)",
-						strokeColor: "rgba(151,187,205,1)",
-						pointColor: "rgba(151,187,205,1)",
-						pointStrokeColor: "#fff",
-						pointHighlightFill: "#fff",
-						pointHighlightStroke: "rgba(151,187,205,1)",
-			            pointHoverRadius: 5,
-			            pointRadius: 1,
-			            pointHitRadius: 10,
-			            data: [65, 20, 40, 21, 36, 15, 20],
-			            spanGaps: false,
-			        }
-				]
-			},
-			"raw_data": {
-			    labels: ["January", "February", "March", "April", "May", "June", "July"],
-			    datasets: [
-			        {
-			            label: "2017",
-			            fillColor: "rgba(220,220,220,0.2)",
-						strokeColor: "rgba(220,220,220,1)",
-						pointColor: "rgba(220,220,220,1)",
-						pointStrokeColor: "#fff",
-						pointHighlightFill: "#fff",
-						pointHighlightStroke: "rgba(220,220,220,1)",
-			            pointHoverRadius: 5,
-			            pointRadius: 1,
-			            pointHitRadius: 10,
-			            data: [65, 59, 80, 81, 56, 55, 40],
-			            spanGaps: false,
-			        }, 
-			        {
-			            label: "2016",
-			            fillColor: "rgba(151,187,205,0.2)",
-						strokeColor: "rgba(151,187,205,1)",
-						pointColor: "rgba(151,187,205,1)",
-						pointStrokeColor: "#fff",
-						pointHighlightFill: "#fff",
-						pointHighlightStroke: "rgba(151,187,205,1)",
-			            pointHoverRadius: 5,
-			            pointRadius: 1,
-			            pointHitRadius: 10,
-			            data: [65, 20, 40, 21, 36, 15, 20],
-			            spanGaps: false,
-			        }
-				]
-			}
-		}
-	}
-
-	toggleYear(year) {
-
-		let newStuff = this.state.raw_data.datasets
-		let yearList = []
-		this.state.raw_data.datasets.map(x => {
-			yearList.push(x.label)
-		})
-
-		if (yearList.includes(year)) {
-			newStuff = this.state.raw_data.datasets.splice(yearList.indexOf(year), 1)
-		} else {
-			let fullYearList = []
-			this.state.raw_data.datasets.map(x => {
-				fullYearList.push(x.label)
-			})
-
-			let dataPoint = this.state.original.datasets[fullYearList.indexOf(year)]
-			newStuff.push(dataPoint)
-		}
-
-		let raw_labels = this.state.raw_data.labels
-
-		this.setState({
-			"raw_data": {
-				"labels": raw_labels,
-				"datasets": newStuff
-			}
-		})
-
-		console.log("here", this.state)
-	}
-
-	toggleMonth(month) {
-		let raw_labels = this.state.raw_data.labels
-		let index = this.state.raw_data.labels.indexOf(month)
-		let newStuff = []
-
-		if (index > -1) {
-			raw_labels.splice(index, 1)
-
-			this.state.raw_data.datasets.map(x => {
-				x["data"].splice(index, 1)
-				newStuff.push(x)
-			})
-		} else {
-			raw_labels.push(month)
-
-			let newLabels = this.state.original.labels.filter(label => raw_labels.includes(label) )
-
-			raw_labels = newLabels
-
-			let dataPointIndex = this.state.original.labels.indexOf(month)
-
-			for (let i = 0; i < this.state.original.datasets.length; i++) {
-				let val = this.state.original.datasets[i]["data"][dataPointIndex]
-				this.state.raw_data.datasets[i]["data"].splice(newLabels.indexOf(month), 0, val)
-				newStuff.push(this.state.raw_data.datasets[i])
-			}
-
-			console.log(newStuff)
-		}
-
-		this.setState({
-			"raw_data": {
-				"labels": raw_labels,
-				"datasets": newStuff
-			}
-		})
-	}
-
-	render() {
-
-		return(
-			<ChartContainer dataPoints={ this.state } toggleMonth= { (month) => this.toggleMonth.bind(this, month) } toggleYear= { (year) => this.toggleYear.bind(this, year) } saveQuery={ (ob) => this.props.saveQuery.bind(this, ob) } ></ChartContainer>
 		)
 	}
 }
