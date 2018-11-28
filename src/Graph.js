@@ -150,7 +150,6 @@ class Graph extends Component {
 			MyChart = <RadarChart data={ this.state.dataPoints } height="300px" width="600px" />
 		}
 
-		console.log(this.state)
 		return (
 			<div>
 				<div className="col s3 m3 l3"></div>

@@ -129,7 +129,7 @@ class App extends Component {
                 <Route path="/" exact component={ () => <div className="row"><Graph global={ this.state.dataPoints } saveQuery={ (ob) => this.saveQuery.bind(this, ob) } toggle={ (a, b) => this.toggle.bind(this, a, b) } /></div> } />
                 <Route path="/map/" component={ () => <div className="row"><h2 className="center-align">Resource Availability</h2><ResourceMap /></div> } />
                 <Route path="/saved/" component={ () => <div className="row"><h2 className="center-align">All of Your Queries in One Place</h2><QPanel queries={ this.state.queries } /></div> } />
-                <Route path="/upload/" component={ () => <div className="row"><h2 className="center-align">Upload New Data to the App</h2><UploadComponent /></div> } />
+                <Route path="/upload/" component={ () => <UploadComponent /> } />
             </div>
           </div>
         </Router>
