@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import Plot from 'react-plotly.js';
 
+import M from 'materialize-css';
+
 class ResourceMap extends Component {
 
 	constructor(props) {
@@ -68,9 +70,13 @@ class ResourceMap extends Component {
 		}
 	}
 
+	componentDidMount() {
+		M.AutoInit();
+	}
+
 	render() {
 
-		console.log(this.state.major)
+		console.log(this.state)
  
 		let majorList = []
 		this.state.data.map(x => {
@@ -87,7 +93,7 @@ class ResourceMap extends Component {
 						<ul id="dropdown" className="dropdown-content">
 							{
 								majorList.map(x => {
-									return <li onClick={ () => this.setState({"major":  x }) }>
+									return <li className="tab" onClick={ () => { this.setState({"major":  x }) }} >
 										<a> { x } </a>
 									</li>
 								})

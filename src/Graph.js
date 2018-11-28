@@ -1,50 +1,18 @@
 import React, { Component } from 'react';
+import M from 'materialize-css';
 import {Line as LineChart, Bar as BarChart, Pie as PieChart, Radar as RadarChart} from 'react-chartjs';
 import Chart from "chart.js";
 import * as math from 'mathjs';
 
-class DropDown extends Component {
-
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		
-		return(
-			<div className="col s12 m12 l12 center-align">
-				<a href="#" className="dropdown-trigger btn" data-target="dropdown">Chart Type</a>
-				<ul id="dropdown" className="dropdown-content">
-					<li onClick={ this.props.changeChart("line") }>
-						<a href='#'>
-							Line
-							<i className="material-icons right">show_chart</i>
-						</a>
-					</li>
-					<li className="divider"></li>
-					<li onClick={ this.props.changeChart("bar") }>
-						<a href='#'>
-							Bar
-							<i className="material-icons right">insert_chart</i>
-						</a>
-					</li>
-					<li className="divider"></li>
-					<li onClick={ this.props.changeChart("radar") }>
-						<a href='#'>
-							Radar
-							<i className="material-icons right">bubble_chart</i>
-						</a>
-					</li>
-				</ul>
-			</div>
-		)
-	}
-}
 
 class Analysis extends Component {
 
 	constructor(props) {
 		super(props);
+	}
+
+	componentDidMount() {
+		M.AutoInit();
 	}
 
 	render() {
@@ -152,10 +120,8 @@ class Graph extends Component {
 
 	}
 
-	changeChart(newChartType) {
-		this.setState({
-			"chartType": newChartType
-		})
+	componentDidMount() {
+		M.AutoInit();
 	}
 
 	render() {

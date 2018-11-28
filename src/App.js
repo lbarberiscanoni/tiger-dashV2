@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import M from 'materialize-css';
 import Graph from "./Graph";
 import UploadComponent from "./DataUpload";
 import ResourceMap from "./ResourceMap";
@@ -101,8 +102,12 @@ class App extends Component {
 
   }
 
-  render() {
+  componentDidMount() {
+    M.AutoInit();
+  }
 
+  render() {
+ 
     return(
       <div>
         <div className="row">

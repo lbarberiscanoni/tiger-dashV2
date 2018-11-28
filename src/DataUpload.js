@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import M from 'materialize-css';
 
 import FileInput from 'react-fine-uploader/file-input'
 import FineUploaderTraditional from 'fine-uploader-wrappers'
@@ -10,6 +11,10 @@ class UploadComponent extends Component {
 		this.state = {
 			"status": false
 		}
+	}
+
+	componentDidMount() {
+		M.AutoInit();
 	}
 
 	render() {
