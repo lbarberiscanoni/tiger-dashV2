@@ -84,20 +84,6 @@ class Graph extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			"chartType": "line",
-		}
-	}
-
-	changeChart(newChartType) {
-		this.setState({
-			"chartType": newChartType
-		})
-	}
-
-	render() {
-		let MyChart
-
 
 		let possibleLabels = this.props.global[Object.keys(this.props.global)[0]].values
 		let labels = []
@@ -108,6 +94,7 @@ class Graph extends Component {
 		})
 
 		let dataPoints = {
+			"possibleLabels": possibleLabels,
 			"labels": labels,
 			"datasets": []
 		}
@@ -139,19 +126,34 @@ class Graph extends Component {
 			}
 		})
 
-		if (this.state.chartType === "line") {
-			MyChart = <LineChart data={ dataPoints } height="300px" width="600px" />
-		} else if (this.state.chartType === "bar") {
-			MyChart = <BarChart data={ dataPoints } height="300px" width="600px" />
-		} else if (this.state.chartType === "radar") {
-			MyChart = <RadarChart data={ dataPoints } height="300px" width="600px" />
+		this.state = {
+			"chartType": "line",
+			"dataPoints": dataPoints
 		}
 
+	}
+
+	changeChart(newChartType) {
+		this.setState({
+			"chartType": newChartType
+		})
+	}
+
+	render() {
+		let MyChart
+
+		if (this.state.chartType === "line") {
+			MyChart = <LineChart data={ this.state.dataPoints } height="300px" width="600px" />
+		} else if (this.state.chartType === "bar") {
+			MyChart = <BarChart data={ this.state.dataPoints } height="300px" width="600px" />
+		} else if (this.state.chartType === "radar") {
+			MyChart = <RadarChart data={ this.state.dataPoints } height="300px" width="600px" />
+		}
+
+		console.log(this.state)
 		return (
 			<div>
-				<div className="col s3 m3 l3">
-					<button onClick={ this.props.toggle("month", "April") }>Test</button>
-				</div>
+				<div className="col s3 m3 l3"></div>
 				<div className="col s6 m6 l6">
 					<div className="row">
 						<DropDown changeChart={ (a) => this.changeChart.bind(this, a) } />
@@ -161,10 +163,10 @@ class Graph extends Component {
 							<form>
 								<div className="col s4 m4 l4">
 									{
-										Object.keys(possibleLabels).map(x => {
+										Object.keys(this.state.dataPoints.possibleLabels).map(x => {
 											return <div key={ x }>
 												<label>
-													<input type="checkbox" className="filled-in" defaultChecked={ possibleLabels[x].display } onClick={ this.props.toggle("month", x) } />
+													<input type="checkbox" className="filled-in" defaultChecked={ this.state.dataPoints.possibleLabels[x].display } onClick={ this.props.toggle("month", x) } />
 													<span>{ x }</span>
 												</label>
 											</div>											
@@ -203,7 +205,7 @@ class Graph extends Component {
 										<i className="material-icons right">subject</i>
 									</div>
 									<div className="collapsible-body">
-										<Analysis dataPoints={ dataPoints } />
+										<Analysis dataPoints={ this.state.dataPoints } />
 									</div>
 								</li>
 							</ul>
@@ -213,7 +215,7 @@ class Graph extends Component {
 					<div className="row">
 						<div className="col s4 m4 l4"></div>
 						<div className="col s4 m4 l4">
-							<button className="btn waves-effect waves-light" > 
+							<button className="btn waves-effect waves-light" onClick={ this.props.saveQuery(this.state) } > 
 								SAVE
 								<i className="material-icons right">save</i>
 							</button>

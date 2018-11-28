@@ -64,35 +64,13 @@ class App extends Component {
         },
       },
       queries: [
-        {
-          graphData: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-              datasets: [
-                  {
-                      label: "2017",
-                      fillColor: "rgba(220,220,220,0.2)",
-                      strokeColor: "rgba(220,220,220,1)",
-                      pointColor: "rgba(220,220,220,1)",
-                      pointStrokeColor: "#fff",
-                      pointHighlightFill: "#fff",
-                      pointHighlightStroke: "rgba(220,220,220,1)",
-                      pointHoverRadius: 5,
-                      pointRadius: 1,
-                      pointHitRadius: 10,
-                      data: [65, 59, 80, 81, 56, 55, 40],
-                      spanGaps: false,
-                  }
-              ]
-          },
-          graphType: "line",
-          date: "2018-11-03", 
-          show: false,
-        }
       ]
     }
   }
 
   saveQuery(ob) {
+    let date = new Date()
+    ob["date"] = date.toString().split(" ").slice(1, 5).join(" ")
     let lastState = this.state.queries
     lastState.push(ob)
     this.setState({
