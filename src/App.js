@@ -69,6 +69,7 @@ class App extends Component {
   }
 
   saveQuery(ob) {
+    alert("Saved!")
     let date = new Date()
     ob["date"] = date.toString().split(" ").slice(1, 5).join(" ")
     let lastState = this.state.queries
