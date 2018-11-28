@@ -31,7 +31,7 @@ class UploadComponent extends Component {
 		return(
 			<div className="row">
 				<h2 className="center-align">
-					{ this.state.status ? "Success!" : "Upload New Data to the App" }
+					{ this.state.status ? "File Uploaded!" : "Upload New Data to the App" }
 				</h2>
 				<div className="container">
 					<div className="col s4 m4 l4"></div>

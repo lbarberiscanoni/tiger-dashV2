@@ -99,6 +99,9 @@ class Graph extends Component {
 			"datasets": []
 		}
 
+
+		let color = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
+		let i = 0
 		Object.keys(this.props.global).map((year) => {
 			if (this.props.global[year].display === true) {
 				let relevantVals = []
@@ -107,15 +110,31 @@ class Graph extends Component {
 						relevantVals.push(this.props.global[year].values[val].data)
 					}
 				})
+
+				let colorString 
+				let newColor = []
+				if (i < 1) {
+					colorString = "rgba(" + color.join(",") + ", .5)"
+				} else {
+					color.map((x) => {
+						let complement = color.sort()[1] + color.sort()[color.length - 1]
+						console.log(complement, x)
+						newColor.push(complement - x)
+					})
+					colorString = "rgba(" + newColor.join(",") + ", .8)"
+				}
+
+
+
 				dataPoints["datasets"].push(
 					{
 						label: year, 
-						fillColor: "rgba(220,220,220,0.2)",
-						strokeColor: "rgba(220,220,220,1)",
-						pointColor: "rgba(220,220,220,1)",
+						fillColor: colorString, 
+						strokeColor: colorString, 
+						pointColor: colorString, 
 						pointStrokeColor: "#fff",
 						pointHighlightFill: "#fff",
-						pointHighlightStroke: "rgba(220,220,220,1)",
+						pointHighlightStroke: "#fff",
 						pointHoverRadius: 5,
 						pointRadius: 1,
 						pointHitRadius: 10,
@@ -123,6 +142,8 @@ class Graph extends Component {
 						data: relevantVals,
 					}
 				)
+
+				i += 1
 			}
 		})
 
@@ -140,6 +161,7 @@ class Graph extends Component {
 	}
 
 	render() {
+		console.log(this.state)
 		let MyChart
 
 		if (this.state.chartType === "line") {
