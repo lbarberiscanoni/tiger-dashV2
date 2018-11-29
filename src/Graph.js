@@ -54,19 +54,26 @@ class Graph extends Component {
 		super(props);
 
 		let possibleLabels = this.props.global[Object.keys(this.props.global)[0]].values
-		let labels = []
-		Object.keys(possibleLabels).map((x) => {
-			if (possibleLabels[x].display === true) {
-				labels.push(x)
-			}
-		})
+		// let labels = []
+		// Object.keys(possibleLabels).map((x) => {
+		// 	if (possibleLabels[x].display === true) {
+		// 		labels.push(x)
+		// 	}
+		// })
+
+		console.log(possibleLabels)
+
+		let af = Object.keys(possibleLabels).filter(x => possibleLabels[x].display === true)
+
+		console.log(af)
 
 		let dataPoints = {
+			"labels": ["January", "February", "March", "April", "May"],
 			"possibleLabels": possibleLabels,
-			"labels": labels,
 			"datasets": [], 
 		}
 
+		console.log(dataPoints)
 
 		let color = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
 		let i = 0
@@ -135,7 +142,7 @@ class Graph extends Component {
 			MyChart = <BarChart data={ this.state.dataPoints } height="300px" width="600px" />
 		} else if (this.state.chartType === "radar") {
 			MyChart = <RadarChart data={ this.state.dataPoints } height="300px" width="600px" />
-		}
+		} 
 
 		return (
 			<div>
@@ -176,7 +183,7 @@ class Graph extends Component {
 										Object.keys(this.state.dataPoints.possibleLabels).map(x => {
 											return <div key={ x }>
 												<label>
-													<input type="checkbox" className="filled-in" defaultChecked={ this.state.dataPoints.possibleLabels[x].display } onClick={ this.props.toggle("month", x) } />
+													<input type="checkbox" className="filled-in" defaultChecked={ this.state.dataPoints.possibleLabels[x].display }  onClick={ this.props.toggle("month", x) }/>
 													<span>{ x }</span>
 												</label>
 											</div>											

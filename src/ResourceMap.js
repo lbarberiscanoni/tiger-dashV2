@@ -65,7 +65,29 @@ class ResourceMap extends Component {
 					"marker": {
 						"color": '#ee6e73'
 					}
-				},				
+				},	
+				{
+					"type": "bar",
+					"orientation": "h",
+					"x": [17, 30],
+					"y": ["available", "needed"],
+					"category": "biology",
+					"title": "BIO 403", 
+					"marker": {
+						"color": '#ee6e73'
+					}
+				},		
+								{
+					"type": "bar",
+					"orientation": "h",
+					"x": [16, 14],
+					"y": ["available", "needed"],
+					"category": "biology",
+					"title": "BIO 201", 
+					"marker": {
+						"color": '#26a69a'
+					}
+				},					
 			]
 		}
 	}

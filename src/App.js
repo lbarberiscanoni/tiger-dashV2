@@ -60,7 +60,7 @@ class App extends Component {
             }, 
             "May": {
               display: true,
-              data: 45
+              data: 42
             }, 
           }
         },
@@ -82,7 +82,6 @@ class App extends Component {
   }
 
   toggle(category, target) {
-    console.log(category, target)
     if (category === "month") {
       Object.keys(this.state.dataPoints).map((year) => {
         this.state.dataPoints[year].values[target].display = !this.state.dataPoints[year].values[target].display
@@ -93,7 +92,6 @@ class App extends Component {
       this.state.dataPoints[target].display = !this.state.dataPoints[target].display
       this.setState(this.state)
     } else {
-      console.log("fuck", target)
       this.setState({
         "chartType": target
       })
